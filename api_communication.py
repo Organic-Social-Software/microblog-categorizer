@@ -21,17 +21,17 @@ class UserNotFoundError(APIError):
 def fetch_all_posts(app_token):
     """
     Fetch all posts from the micro.blog account using pagination.
-    
+
     Parameters:
     - app_token: The app token provided by the user for authentication.
-    
+
     Returns:
     A list of all posts fetched from the micro.blog account.
     """
     all_posts = []
     page = 1
     print("Fetching posts...", end="")
-    
+
     while True:
         url = f"https://micro.blog/micropub?q=source&page={page}"
         headers = authenticate_request(app_token)
@@ -55,33 +55,32 @@ def fetch_all_posts(app_token):
 def update_post_category(app_token, post_id, categories):
     """
     Update the category of a specific post.
-    
+
     Parameters:
     - app_token: The app token provided by the user for authentication.
     - post_id: The ID of the post to update.
     - categories: A list of categories to be associated with the post.
-    
+
     Returns:
     True if the update was successful, False otherwise.
     """
-    url = f"https://micro.blog/micropub/posts/{post_id}"
+    url = "https://micro.blog/micropub"
     headers = authenticate_request(app_token)
-    headers['Content-Type'] = 'application/json'
-    
-    data = json.dumps({
+
+    data = {
         "action": "update",
-        "url": f"https://micro.blog/posts/{post_id}",
+        "url": post_id,
         "replace": {
             "category": categories
         }
-    })
-    
-    response = requests.post(url, data=data, headers=headers)
-    
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
     if response.status_code != 200:
         print(f"Failed to update post {post_id} with categories {categories}.")
         print(f"Response status code: {response.status_code}")
         print(f"Response content: {response.content}")
         raise APIError("Failed to update post category. Please check your network connection and try again.")
-    
+
     return True

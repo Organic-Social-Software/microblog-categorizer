@@ -5,10 +5,10 @@ from pprint import pprint  # Add this import at the top of the file
 def analyze_categories(app_token):
     """
     Analyze categories from fetched posts and identify which ones should be deleted.
-    
+
     Parameters:
     - app_token: The app token provided by the user for authentication.
-    
+
     Returns:
     A dictionary where keys are category names and values are lists of post IDs associated with each category.
     """
@@ -22,9 +22,9 @@ def analyze_categories(app_token):
         if categories:  # Check if categories list is not empty
             for category in categories:
                 if category not in category_post_map:
-                    category_post_map[category] = {post['properties']['uid'][0]}  # Use a set instead of a list
+                    category_post_map[category] = {post['properties']['url'][0]}  # Use a set instead of a list
                 else:
-                    category_post_map[category].add(post['properties']['uid'][0])  # Use add method for a set
+                    category_post_map[category].add(post['properties']['url'][0])  # Use add method for a set
 
     # Debugging print to verify category_post_map contents
     print("Category post map contents:")
@@ -35,7 +35,7 @@ def analyze_categories(app_token):
 def delete_categories(app_token):
     """
     Main function to handle the deletion of categories with less than 3 posts.
-    
+
     Parameters:
     - app_token: The app token provided by the user for authentication.
     """
