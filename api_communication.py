@@ -1,4 +1,5 @@
 import requests
+import json
 from auth import authenticate_request
 
 class APIError(Exception):
@@ -65,13 +66,17 @@ def update_post_category(app_token, post_id, categories):
     """
     url = f"https://micro.blog/micropub/posts/{post_id}"
     headers = authenticate_request(app_token)
-    data = {
+    headers['Content-Type'] = 'application/json'
+    
+    data = json.dumps({
         "action": "update",
         "url": f"https://micro.blog/posts/{post_id}",
-        "replace": {"category": categories}
-    }
+        "replace": {
+            "category": categories
+        }
+    })
     
-    response = requests.post(url, json=data, headers=headers)
+    response = requests.post(url, data=data, headers=headers)
     
     if response.status_code != 200:
         print(f"Failed to update post {post_id} with categories {categories}.")
