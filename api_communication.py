@@ -44,7 +44,7 @@ def fetch_all_posts(app_token):
             all_posts.extend(data["items"])
             print(f"\rFetched {len(all_posts)} posts...", end="")
             page += 1
-            if len(all_posts) > 100:  # Assuming 100 is a reasonable upper limit for your use case
+            if len(all_posts) > 200:  # Assuming 200 is a reasonable upper limit for your use case
                 print("\rFetched posts limit reached. Aborting...")
                 break
         else:
